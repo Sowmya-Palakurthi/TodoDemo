@@ -7,5 +7,5 @@ data class taskRequest(
     val title: String,
     val description: String,
     val isdone: Boolean,
-   val deadline:String
+    val deadline:String
 )

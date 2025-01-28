@@ -1,67 +1,59 @@
+
 package com.example
 
-import com.example.db.UpdatePasswordRequest
-import com.example.db.isDoneUpdateRequest
+import com.example.db.*
+import com.example.tasks.isdone
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import com.example.db.taskRequest
-import com.example.db.userRequest
-import com.example.users
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.transactions.transaction
+import java.time.LocalDate
 
 fun Application.configureRouting() {
 
     routing {
-        route("/hi") {
+        route("/users/{emailid}") {
             get {
-                call.respondText("Hello, Ktor!")
-            }
-        }
+                val emailId = call.parameters["emailid"] ?: return@get call.respond(HttpStatusCode.BadRequest, "Missing email ID")
+                val user = getUserByEmail(emailId)
 
-        route("/users") {
-            get {
-                val userlist = getUsers()
-                call.respond(userlist)
+                if (user != null) {
+                    call.respond(user)
+                } else {
+                    call.respond(HttpStatusCode.NotFound, "User with email '$emailId' not found")
+                }
             }
         }
 
         route("/users") {
             post {
                 val userRequest = call.receive<userRequest>()
-                val emailid = userRequest.emailid
-                val username = userRequest.username
-                val password = userRequest.password
-
                 try {
-                    addUser(emailid, username, password)
-                    call.respond(HttpStatusCode.Created, mapOf("message" to "User created successfully"))
+                    addUser(userRequest.emailid, userRequest.username, userRequest.password)
+                    call.respond(HttpStatusCode.Created, "User created successfully")
                 } catch (e: Exception) {
-                    call.respond(HttpStatusCode.BadRequest, "${e.message}")
+                    call.respond(HttpStatusCode.BadRequest, e.message ?: "Error occurred")
                 }
             }
         }
 
         route("/users/{emailid}") {
             delete {
-                val emailId = call.parameters["emailid"] ?: run {
-                    call.respond(HttpStatusCode.BadRequest, "Invalid email ID")
-                    return@delete
-                }
-
+                val emailId = call.parameters["emailid"] ?: return@delete call.respond(HttpStatusCode.BadRequest, "Invalid email ID")
                 val request = call.receive<Map<String, String>>()
-                val password = request["password"] ?: run {
-                    call.respond(HttpStatusCode.BadRequest, "Password is required")
-                    return@delete
-                }
+                val password = request["password"] ?: return@delete call.respond(HttpStatusCode.BadRequest, "Password is required")
 
                 val isDeleted = deleteUser(emailId, password)
+
                 if (isDeleted) {
                     call.respond(HttpStatusCode.OK, "User deleted successfully")
                 } else {
-                    call.respond(HttpStatusCode.Unauthorized, "Invalid email ID or password")
+                    call.respond(HttpStatusCode.Unauthorized, "Invalid email or password")
                 }
             }
         }
@@ -69,114 +61,136 @@ fun Application.configureRouting() {
         route("/users/update-password") {
             put {
                 val updatePasswordRequest = call.receive<UpdatePasswordRequest>()
-
-                val isUpdated = updatePassword(updatePasswordRequest.emailid,updatePasswordRequest.currentPassword, updatePasswordRequest.newPassword)
-
+                val isUpdated = updatePassword(updatePasswordRequest.emailid, updatePasswordRequest.currentPassword, updatePasswordRequest.newPassword)
                 if (isUpdated) {
                     call.respond(HttpStatusCode.OK, "Password updated successfully.")
                 } else {
                     call.respond(HttpStatusCode.Unauthorized, "Invalid email or current password.")
                 }
             }
-
         }
 
 
-        //tasks related
+        route("/tasks") {
 
-       route("/tasks/getinfo/{title}"){
-           get{
-               val title = call.parameters["title"]?.toString()
-               if(title!=null){
-                   val tasksdata=getTaskInfo(title)
-                   call.respond(tasksdata)
-               }
-               else{
-                   call.respond(HttpStatusCode.BadRequest, "Invalid user ID")
-               }
-           }
-       }
-
-            route("/tasks/{emailid}") {
-                get {
-                    val emailid = call.parameters["emailid"]?.toString()
-                    if (emailid != null) {
-                        val tasks = getTasks(emailid)
-                        call.respond(tasks)
+            get("/{emailid}") {
+                val emailid = call.parameters["emailid"] ?: return@get call.respond(
+                    HttpStatusCode.BadRequest,
+                    "Email ID missing."
+                )
+                val redis = RedisClient.jedis
+                try {
+                    val cachedTasks = redis.get("tasks:$emailid")
+                    if (cachedTasks != null) {
+                        val tasks = Json.decodeFromString<List<taskResponse>>(cachedTasks)
+                        call.respond(HttpStatusCode.OK, tasks)
+                        return@get
+                    }
+                    val tasksList = fetchTasksFromDatabase(emailid)
+                    if (tasksList.isNotEmpty()) {
+                        redis.setex("tasks:$emailid", 3600, Json.encodeToString(tasksList))
+                        call.respond(HttpStatusCode.OK, tasksList)
                     } else {
-                        call.respond(HttpStatusCode.BadRequest, "Invalid email ID")
+                        call.respond(HttpStatusCode.NotFound, "No tasks found for $emailid.")
                     }
-                }
-
-                post {
-                    val emailid = call.parameters["emailid"]?.toString()
-                    try {
-                        if (emailid != null) {
-                            val taskRequest = call.receive<taskRequest>()
-                            addTask(taskRequest, emailid)
-                            call.respond(HttpStatusCode.Created, "Task created")
-                        }
-                    } catch (e: Exception) {
-                        call.respond(HttpStatusCode.BadRequest, "${e.message}")
-                    }
-                }
-
-                put {
-                    // Extract parameters from the request
-                    val emailId = call.parameters["emailid"] ?: return@put call.respond(HttpStatusCode.BadRequest, "Missing emailId")
-                    // Receive the taskRequest data
-                    val isDoneUpdateRequest = call.receive<isDoneUpdateRequest>()
-                    // Call the function to update the task
-                    val updated = updateTask(emailId,isDoneUpdateRequest )
-                    if (updated) {
-                        call.respond(HttpStatusCode.OK, "Task updated successfully")
-                    } else {
-                        call.respond(HttpStatusCode.NotFound, "Task not found")
-                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    call.respond(HttpStatusCode.InternalServerError, "Error retrieving tasks.")
                 }
             }
 
 
-
-
-
-
-
-
-
-        route("/tasks/{emailid}/{title}") {
-            delete {
-                val emailid = call.parameters["emailid"]?.toString()
-                val title = call.parameters["title"]?.toString()
-
-                // Extract password from the request body
-                val request = call.receive<Map<String, String>>()
-                val password = request["password"] ?: run {
-                    call.respond(HttpStatusCode.BadRequest, "Password is required")
-                    return@delete
-                }
-
-                if (emailid != null && title != null) {
-                    try {
-                        // Call the deleteTask function with the password for validation
-                        val isDeleted = deleteTask(emailid, title, password)
-                        if (isDeleted) {
-                            call.respond(HttpStatusCode.OK, "Task deleted successfully")
-                        } else {
-                            call.respond(HttpStatusCode.Unauthorized, "Invalid password or task not found")
-                        }
-                    } catch (e: Exception) {
-                        call.respond(HttpStatusCode.BadRequest, "Failed to delete task: ${e.message}")
-                    }
+            post("/add") {
+                val taskRequest = call.receive<taskResponse>()
+                val title = taskRequest.title
+                val emailid = taskRequest.emailid
+                val description = taskRequest.description
+                val isdone = taskRequest.isdone
+                val deaddate=taskRequest.deadline.toInt()?:null
+                val deadline = if (deaddate == null) {
+                    "No Deadline" // Handle null case
+                } else if (deaddate < 0) {
+                    call.respond(HttpStatusCode.BadRequest, "Deadline cannot be negative")
+                    return@post
                 } else {
-                    call.respond(HttpStatusCode.BadRequest, "Missing email or title parameters")
+                    LocalDate.now().plusDays(deaddate.toLong()).toString()
+                }
+                transaction {
+                    tasks.insert {
+                        it[this.title] = title
+                        it[this.emailid] = emailid
+                        it[this.description] = description
+                        it[this.deadline] = deadline
+                        it[this.isdone] = isdone
+                    }
+                }
+                RedisClient.jedis.del("tasks:$emailid")
+                call.respond(HttpStatusCode.Created, "Task added successfully.")
+            }
+
+
+            // DELETE /tasks/{emailid}/{title}
+
+
+
+            delete("/{emailid}/{title}") {
+                val emailid = call.parameters["emailid"] ?: return@delete call.respond(
+                    HttpStatusCode.BadRequest,
+                    "Email ID missing."
+                )
+                val title = call.parameters["title"] ?: return@delete call.respond(
+                    HttpStatusCode.BadRequest,
+                    "Task title missing."
+                )
+
+                val redis = RedisClient.jedis
+
+                try {
+                    redis.del("tasks:$emailid")
+                    val isDeleted = deleteTaskFromDatabase(emailid, title)
+                    if (isDeleted) {
+                        call.respond(HttpStatusCode.OK, "Task '$title' deleted successfully.")
+                    } else {
+                        call.respond(HttpStatusCode.NotFound, "Task '$title' not found for $emailid.")
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    call.respond(HttpStatusCode.InternalServerError, "Error deleting task.")
+                } finally {
+                    redis.close()
                 }
             }
-        }}}
 
 
 
 
 
+            put("/update-status") {
+                try {
+                    // Deserialize the request body into UpdateTaskStatusRequest
+                    val request = call.receive<UpdateTaskStatusRequest>()
 
+                    // Extract the properties from the deserialized request object
+                    val emailId = request.emailid
+                    val title = request.title
+                    val isDone = request.isDone
+                    if (emailId.isNullOrBlank() || title.isNullOrBlank()) {
+                        call.respond(HttpStatusCode.BadRequest, "Email ID and Title are required.")
+                        return@put
+                    }
 
+                    val isUpdated = updateTaskStatus(emailId, title, isDone)
+                    if (isUpdated) {
+                        call.respond(HttpStatusCode.OK, "Task status updated successfully.")
+                    } else {
+                        call.respond(HttpStatusCode.NotFound, "Task not found.")
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    call.respond(HttpStatusCode.InternalServerError, "Error updating task status.")
+                }
+            }
+
+        }
+    }
+}

@@ -12,10 +12,15 @@ fun main() {
         module()
     }.start(wait = true)
 }
+
 fun Application.module() {
     DatabaseFactory.init()
     install(ContentNegotiation) {
         json()
     }
+
+    RedisClient.jedis
+
     configureRouting()
+
 }
