@@ -10,8 +10,8 @@ import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transaction
 
-object DatabaseFactory {
-    fun init() {
+object DatabaseFactory {   //used to initialize databases and setup tables
+    fun init() {  //used for initialization
 
         val config = HikariConfig().apply {
             jdbcUrl = "jdbc:postgresql://localhost:5432/todoapp"
@@ -21,10 +21,10 @@ object DatabaseFactory {
             maximumPoolSize = 10
         }
 
-        val dataSource = HikariDataSource(config)
+        val dataSource = HikariDataSource(config) //entry point for db connections
         Database.connect(dataSource)
         transaction {
-            SchemaUtils.create(users, tasks)
+            SchemaUtils.create(users, tasks) //create the tables in db if they don't already exist
         }
     }
 }

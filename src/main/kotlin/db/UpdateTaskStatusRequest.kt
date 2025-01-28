@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class UpdateTaskStatusRequest(
-    val email: String,
+    val emailid: String,
     val title: String,
     val isDone: Boolean
 )
