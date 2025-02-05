@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.example.ApplicationTest" tests="1" skipped="0" failures="1" errors="0" timestamp="2025-02-05T10:49:32" hostname="sowmyapalakurthi-MacBook-Pro" time="0.336">
+  <properties/>
+  <testcase name="testRoot" classname="com.example.ApplicationTest" time="0.336">
+    <failure message="kotlin.UninitializedPropertyAccessException: lateinit property appComponent has not been initialized" type="kotlin.UninitializedPropertyAccessException">kotlin.UninitializedPropertyAccessException: lateinit property appComponent has not been initialized
+	at com.example.MyApplication$Companion.getAppComponent(Application.kt:16)
+	at com.example.ApplicationKt.module(Application.kt:28)
+	at com.example.ApplicationTest$testRoot$1.invokeSuspend$lambda$0(ApplicationTest.kt:14)
+	at io.ktor.server.engine.EmbeddedServer.instantiateAndConfigureApplication$lambda$25(EmbeddedServerJvm.kt:344)
+	at io.ktor.server.engine.EmbeddedServer.avoidingDoubleStartup(EmbeddedServerJvm.kt:361)
+	at io.ktor.server.engine.EmbeddedServer.instantiateAndConfigureApplication(EmbeddedServerJvm.kt:333)
+	at io.ktor.server.engine.EmbeddedServer.createApplication(EmbeddedServerJvm.kt:142)
+	at io.ktor.server.engine.EmbeddedServer.start(EmbeddedServerJvm.kt:272)
+	at io.ktor.server.engine.EmbeddedServer.start$default(EmbeddedServerJvm.kt:267)
+	at io.ktor.server.testing.TestApplication.start(TestApplication.kt:83)
+	at io.ktor.server.testing.client.DelegatingTestClientEngine.execute(DelegatingTestClientEngine.kt:48)
+	at io.ktor.client.engine.HttpClientEngine$executeWithinCallContext$2.invokeSuspend(HttpClientEngine.kt:169)
+	at _COROUTINE._BOUNDARY._(CoroutineDebugging.kt:42)
+	at io.ktor.client.engine.HttpClientEngine$DefaultImpls.executeWithinCallContext(HttpClientEngine.kt:170)
+	at io.ktor.client.engine.HttpClientEngine$install$1.invokeSuspend(HttpClientEngine.kt:140)
+	at io.ktor.util.pipeline.DebugPipelineContext.proceedLoop(DebugPipelineContext.kt:79)
+	at io.ktor.client.plugins.HttpSend$DefaultSender.execute(HttpSend.kt:118)
+	at io.ktor.client.plugins.HttpRedirectKt$HttpRedirect$2$1.invokeSuspend(HttpRedirect.kt:97)
+	at io.ktor.client.plugins.api.Send$install$1.invokeSuspend(CommonHooks.kt:46)
+	at io.ktor.client.plugins.HttpCallValidatorKt$HttpCallValidator$2$2.invokeSuspend(HttpCallValidator.kt:112)
+	at io.ktor.client.plugins.api.Send$install$1.invokeSuspend(CommonHooks.kt:46)
+	at io.ktor.client.plugins.HttpSend$Plugin$install$1.invokeSuspend(HttpSend.kt:84)
+	at io.ktor.util.pipeline.DebugPipelineContext.proceedLoop(DebugPipelineContext.kt:79)
+	at io.ktor.client.plugins.RequestError$install$1.invokeSuspend(HttpCallValidator.kt:134)
+	at io.ktor.util.pipeline.DebugPipelineContext.proceedLoop(DebugPipelineContext.kt:79)
+	at io.ktor.client.plugins.HttpRequestLifecycleKt$HttpRequestLifecycle$1$1.invokeSuspend(HttpRequestLifecycle.kt:27)
+	at io.ktor.client.plugins.SetupRequestContext$install$1.invokeSuspend(HttpRequestLifecycle.kt:40)
+	at io.ktor.util.pipeline.DebugPipelineContext.proceedLoop(DebugPipelineContext.kt:79)
+	at io.ktor.client.HttpClient.execute$ktor_client_core(HttpClient.kt:1393)
+	at io.ktor.client.statement.HttpStatement.fetchResponse(HttpStatement.kt:147)
+	at com.example.ApplicationTest$testRoot$1.invokeSuspend(ApplicationTest.kt:34)
+	at io.ktor.server.testing.TestApplicationKt$runTestApplication$2$2.invokeSuspend(TestApplication.kt:412)
+	at io.ktor.server.testing.TestApplicationKt.runTestApplication(TestApplication.kt:412)
+	at io.ktor.server.testing.TestApplicationKt$testApplication$1.invokeSuspend(TestApplication.kt:395)
+	at io.ktor.test.dispatcher.TestCommonKt$runTestWithRealTime$1.invokeSuspend(TestCommon.kt:38)
+	at kotlinx.coroutines.test.TestBuildersKt__TestBuildersKt$runTest$2$1$1.invokeSuspend(TestBuilders.kt:318)
+Caused by: kotlin.UninitializedPropertyAccessException: lateinit property appComponent has not been initialized
+	at com.example.MyApplication$Companion.getAppComponent(Application.kt:16)
+	at com.example.ApplicationKt.module(Application.kt:28)
+	at com.example.ApplicationTest$testRoot$1.invokeSuspend$lambda$0(ApplicationTest.kt:14)
+	at io.ktor.server.engine.EmbeddedServer.instantiateAndConfigureApplication$lambda$25(EmbeddedServerJvm.kt:344)
+	at io.ktor.server.engine.EmbeddedServer.avoidingDoubleStartup(EmbeddedServerJvm.kt:361)
+	at io.ktor.server.engine.EmbeddedServer.instantiateAndConfigureApplication(EmbeddedServerJvm.kt:333)
+	at io.ktor.server.engine.EmbeddedServer.createApplication(EmbeddedServerJvm.kt:142)
+	at io.ktor.server.engine.EmbeddedServer.start(EmbeddedServerJvm.kt:272)
+	at io.ktor.server.engine.EmbeddedServer.start$default(EmbeddedServerJvm.kt:267)
+	at io.ktor.server.testing.TestApplication.start(TestApplication.kt:83)
+	at io.ktor.server.testing.client.DelegatingTestClientEngine.execute(DelegatingTestClientEngine.kt:48)
+	at io.ktor.client.engine.HttpClientEngine$executeWithinCallContext$2.invokeSuspend(HttpClientEngine.kt:169)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:33)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:101)
+	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:113)
+	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:89)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:589)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:823)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:720)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:707)
+</failure>
+  </testcase>
+  <system-out><![CDATA[2025-02-05 16:19:32.740 [DefaultDispatcher-worker-2 @call-context#3] INFO  io.ktor.test - No ktor.deployment.watch patterns specified, automatic reload is not active.
+2025-02-05 16:19:32 [DefaultDispatcher-worker-2 @call-context#3] INFO  io.ktor.test - No ktor.deployment.watch patterns specified, automatic reload is not active.
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
