@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="x-ua-compatible" content="IE=edge"/>
+<title>Test results - Class com.example.ApplicationTest</title>
+<link href="../css/base-style.css" rel="stylesheet" type="text/css"/>
+<link href="../css/style.css" rel="stylesheet" type="text/css"/>
+<script src="../js/report.js" type="text/javascript"></script>
+</head>
+<body>
+<div id="content">
+<h1>Class com.example.ApplicationTest</h1>
+<div class="breadcrumbs">
+<a href="../index.html">all</a> &gt; 
+<a href="../packages/com.example.html">com.example</a> &gt; ApplicationTest</div>
+<div id="summary">
+<table>
+<tr>
+<td>
+<div class="summaryGroup">
+<table>
+<tr>
+<td>
+<div class="infoBox" id="tests">
+<div class="counter">1</div>
+<p>tests</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="failures">
+<div class="counter">1</div>
+<p>failures</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="ignored">
+<div class="counter">0</div>
+<p>ignored</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="duration">
+<div class="counter">0.336s</div>
+<p>duration</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</td>
+<td>
+<div class="infoBox failures" id="successRate">
+<div class="percent">0%</div>
+<p>successful</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div id="tabs">
+<ul class="tabLinks">
+<li>
+<a href="#tab0">Failed tests</a>
+</li>
+<li>
+<a href="#tab1">Tests</a>
+</li>
+<li>
+<a href="#tab2">Standard output</a>
+</li>
+</ul>
+<div id="tab0" class="tab">
+<h2>Failed tests</h2>
+<div class="test">
+<a name="testRoot"></a>
+<h3 class="failures">testRoot</h3>
+<span class="code">
+<pre>kotlin.UninitializedPropertyAccessException: lateinit property appComponent has not been initialized
+	at com.example.MyApplication$Companion.getAppComponent(Application.kt:16)
+	at com.example.ApplicationKt.module(Application.kt:28)
+	at com.example.ApplicationTest$testRoot$1.invokeSuspend$lambda$0(ApplicationTest.kt:14)
+	at io.ktor.server.engine.EmbeddedServer.instantiateAndConfigureApplication$lambda$25(EmbeddedServerJvm.kt:344)
+	at io.ktor.server.engine.EmbeddedServer.avoidingDoubleStartup(EmbeddedServerJvm.kt:361)
+	at io.ktor.server.engine.EmbeddedServer.instantiateAndConfigureApplication(EmbeddedServerJvm.kt:333)
+	at io.ktor.server.engine.EmbeddedServer.createApplication(EmbeddedServerJvm.kt:142)
+	at io.ktor.server.engine.EmbeddedServer.start(EmbeddedServerJvm.kt:272)
+	at io.ktor.server.engine.EmbeddedServer.start$default(EmbeddedServerJvm.kt:267)
+	at io.ktor.server.testing.TestApplication.start(TestApplication.kt:83)
+	at io.ktor.server.testing.client.DelegatingTestClientEngine.execute(DelegatingTestClientEngine.kt:48)
+	at io.ktor.client.engine.HttpClientEngine$executeWithinCallContext$2.invokeSuspend(HttpClientEngine.kt:169)
+	at _COROUTINE._BOUNDARY._(CoroutineDebugging.kt:42)
+	at io.ktor.client.engine.HttpClientEngine$DefaultImpls.executeWithinCallContext(HttpClientEngine.kt:170)
+	at io.ktor.client.engine.HttpClientEngine$install$1.invokeSuspend(HttpClientEngine.kt:140)
+	at io.ktor.util.pipeline.DebugPipelineContext.proceedLoop(DebugPipelineContext.kt:79)
+	at io.ktor.client.plugins.HttpSend$DefaultSender.execute(HttpSend.kt:118)
+	at io.ktor.client.plugins.HttpRedirectKt$HttpRedirect$2$1.invokeSuspend(HttpRedirect.kt:97)
+	at io.ktor.client.plugins.api.Send$install$1.invokeSuspend(CommonHooks.kt:46)
+	at io.ktor.client.plugins.HttpCallValidatorKt$HttpCallValidator$2$2.invokeSuspend(HttpCallValidator.kt:112)
+	at io.ktor.client.plugins.api.Send$install$1.invokeSuspend(CommonHooks.kt:46)
+	at io.ktor.client.plugins.HttpSend$Plugin$install$1.invokeSuspend(HttpSend.kt:84)
+	at io.ktor.util.pipeline.DebugPipelineContext.proceedLoop(DebugPipelineContext.kt:79)
+	at io.ktor.client.plugins.RequestError$install$1.invokeSuspend(HttpCallValidator.kt:134)
+	at io.ktor.util.pipeline.DebugPipelineContext.proceedLoop(DebugPipelineContext.kt:79)
+	at io.ktor.client.plugins.HttpRequestLifecycleKt$HttpRequestLifecycle$1$1.invokeSuspend(HttpRequestLifecycle.kt:27)
+	at io.ktor.client.plugins.SetupRequestContext$install$1.invokeSuspend(HttpRequestLifecycle.kt:40)
+	at io.ktor.util.pipeline.DebugPipelineContext.proceedLoop(DebugPipelineContext.kt:79)
+	at io.ktor.client.HttpClient.execute$ktor_client_core(HttpClient.kt:1393)
+	at io.ktor.client.statement.HttpStatement.fetchResponse(HttpStatement.kt:147)
+	at com.example.ApplicationTest$testRoot$1.invokeSuspend(ApplicationTest.kt:34)
+	at io.ktor.server.testing.TestApplicationKt$runTestApplication$2$2.invokeSuspend(TestApplication.kt:412)
+	at io.ktor.server.testing.TestApplicationKt.runTestApplication(TestApplication.kt:412)
+	at io.ktor.server.testing.TestApplicationKt$testApplication$1.invokeSuspend(TestApplication.kt:395)
+	at io.ktor.test.dispatcher.TestCommonKt$runTestWithRealTime$1.invokeSuspend(TestCommon.kt:38)
+	at kotlinx.coroutines.test.TestBuildersKt__TestBuildersKt$runTest$2$1$1.invokeSuspend(TestBuilders.kt:318)
+Caused by: kotlin.UninitializedPropertyAccessException: lateinit property appComponent has not been initialized
+	at com.example.MyApplication$Companion.getAppComponent(Application.kt:16)
+	at com.example.ApplicationKt.module(Application.kt:28)
+	at com.example.ApplicationTest$testRoot$1.invokeSuspend$lambda$0(ApplicationTest.kt:14)
+	at io.ktor.server.engine.EmbeddedServer.instantiateAndConfigureApplication$lambda$25(EmbeddedServerJvm.kt:344)
+	at io.ktor.server.engine.EmbeddedServer.avoidingDoubleStartup(EmbeddedServerJvm.kt:361)
+	at io.ktor.server.engine.EmbeddedServer.instantiateAndConfigureApplication(EmbeddedServerJvm.kt:333)
+	at io.ktor.server.engine.EmbeddedServer.createApplication(EmbeddedServerJvm.kt:142)
+	at io.ktor.server.engine.EmbeddedServer.start(EmbeddedServerJvm.kt:272)
+	at io.ktor.server.engine.EmbeddedServer.start$default(EmbeddedServerJvm.kt:267)
+	at io.ktor.server.testing.TestApplication.start(TestApplication.kt:83)
+	at io.ktor.server.testing.client.DelegatingTestClientEngine.execute(DelegatingTestClientEngine.kt:48)
+	at io.ktor.client.engine.HttpClientEngine$executeWithinCallContext$2.invokeSuspend(HttpClientEngine.kt:169)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:33)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:101)
+	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:113)
+	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:89)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:589)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:823)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:720)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:707)
+</pre>
+</span>
+</div>
+</div>
+<div id="tab1" class="tab">
+<h2>Tests</h2>
+<table>
+<thead>
+<tr>
+<th>Test</th>
+<th>Duration</th>
+<th>Result</th>
+</tr>
+</thead>
+<tr>
+<td class="failures">testRoot</td>
+<td class="failures">0.336s</td>
+<td class="failures">failed</td>
+</tr>
+</table>
+</div>
+<div id="tab2" class="tab">
+<h2>Standard output</h2>
+<span class="code">
+<pre>2025-02-05 16:19:32.740 [DefaultDispatcher-worker-2 @call-context#3] INFO  io.ktor.test - No ktor.deployment.watch patterns specified, automatic reload is not active.
+2025-02-05 16:19:32 [DefaultDispatcher-worker-2 @call-context#3] INFO  io.ktor.test - No ktor.deployment.watch patterns specified, automatic reload is not active.
+</pre>
+</span>
+</div>
+</div>
+<div id="footer">
+<p>
+<div>
+<label class="hidden" id="label-for-line-wrapping-toggle" for="line-wrapping-toggle">Wrap lines
+<input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
+</label>
+</div>Generated by 
+<a href="http://www.gradle.org">Gradle 8.4</a> at 5 Feb 2025, 4:19:32 pm</p>
+</div>
+</div>
+</body>
+</html>
