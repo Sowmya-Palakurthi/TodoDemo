@@ -65,7 +65,7 @@ dependencies {
 }
 
 kotlin {
-    jvmToolchain(20) // Uses Java 20
+    jvmToolchain(11) // Uses Java 20
 }
 kapt {
     correctErrorTypes = true

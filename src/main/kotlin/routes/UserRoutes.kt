@@ -15,15 +15,17 @@ fun Route.userRoutes(userService: UsersImplementation){
     route("/users") {
         get("/{emailid}") {
             try {
-                val emailId = call.parameters["emailid"] ?: return@get call.respond(HttpStatusCode.BadRequest, "Missing email ID")
+                val emailId = call.parameters["emailid"] ?: return@get call.respond(HttpStatusCode.BadRequest, "Missing email ID") // TODO: Throw custom exception
                 val user = userService.getUser(emailId)
                 if (user != null) {
                     call.respond(user)
                 } else {
+                    // FIXME: Throw Exception For user not found
                     call.respond(HttpStatusCode.NotFound, "User with email '$emailId' not found")
                 }
             } catch (e: Exception) {
-                e.printStackTrace()
+                // TODO: Throw custom exception
+                e.printStackTrace() // FIXME: Use logger
                 call.respond(HttpStatusCode.InternalServerError, "Error fetching user.")
             }
         }
@@ -33,6 +35,7 @@ fun Route.userRoutes(userService: UsersImplementation){
                 val userRequest = call.receive<userRequest>()
 
                 var email=userRequest.emailid
+                // TODO: Move validation logic in service layer
                 if(email.isBlank() || userRequest.username.isBlank() || userRequest.password.isBlank()){  call.respond(HttpStatusCode.BadRequest, "some details are missing")}
 
 

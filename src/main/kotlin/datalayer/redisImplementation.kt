@@ -54,7 +54,7 @@ class redisImplementation @Inject constructor():redisActions {
         override fun addTaskData(request: taskResponse): Boolean {
             return try {
                 val taskJson = Json.encodeToString(request)
-                jedis.setex("task:${request.emailid}:${request.title}", 3600, taskJson) // Cache task for 1 hour
+                jedis.setex("task:${request.emailid}:${request.title}", 3600, taskJson) // Cache task for 1 hour // FIXME: Caching strategy of task is not correct
                 true
             } catch (e: Exception) {
                 false

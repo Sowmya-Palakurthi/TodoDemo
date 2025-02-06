@@ -2,6 +2,7 @@ package com.example.database.dataclasses
 
 import kotlinx.serialization.Serializable
 
+// FIXME: Follow Class Naming Convention
 @Serializable
 data class taskResponse(
     val title: String,

@@ -8,7 +8,7 @@ import com.example.service.impl.UsersImplementation
 import dagger.Component
 import javax.inject.Singleton
 
-
+// FIXME: Instead of Injecting Concrete classes in DI inject interfaces loose coupling
 @Singleton
 @Component(modules = [AppModule::class])
 interface AppComponent {

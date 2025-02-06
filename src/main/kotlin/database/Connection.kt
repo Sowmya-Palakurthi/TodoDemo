@@ -1,6 +1,6 @@
 package com.example.database
 
-
+// TODO: Remove unnecessary files
 //import io.ktor.server.application.*
 //import org.jetbrains.exposed.sql.*
 //

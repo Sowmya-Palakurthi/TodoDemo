@@ -16,6 +16,12 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import com.example.service.actions.UserActions
 import javax.inject.Inject
 
+/**
+ * Feedback:
+ * 1. Repository Layer is missing
+ * 2. Keep all DB operations in Repository Layer and implement there and inject in service layer
+ * 3. Primary key should be
+ * **/
 class UsersImplementation @Inject constructor(  private val redisCache: redisActions) : UserActions {
 
     override suspend fun getUser(emailId: String): userResponse? {
@@ -24,6 +30,7 @@ class UsersImplementation @Inject constructor(  private val redisCache: redisAct
             return Json.decodeFromString(cachedUser)
         }
         val userFromDb = transaction {
+            // FIXME: Write Repository Layer and move this logic in that and do Dependency Injection In Service Class
             users.select { users.emailid eq emailId }.singleOrNull()?.let {
                 userResponse(
                     emailid = it[users.emailid],
@@ -38,6 +45,7 @@ class UsersImplementation @Inject constructor(  private val redisCache: redisAct
     }
 
     override suspend fun addUser(request: userRequest): Boolean {
+        // FIXME: Move this in Repository Layer
         return transaction {
             users.insert {
                 it[emailid] = request.emailid

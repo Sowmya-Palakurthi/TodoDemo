@@ -23,6 +23,8 @@ import java.time.temporal.ChronoUnit
 
 class TasksImplemetation @Inject constructor(private val redisCache: redisActions) : TaskActions {
 
+    // TODO: Remove unused methods
+    // FIXME: Instead of String use Instant
     fun calculateDeadline(daysLeft: String): String {
         val days = daysLeft.toLongOrNull() ?: throw IllegalArgumentException("Invalid number format")
 

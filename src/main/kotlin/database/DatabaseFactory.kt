@@ -10,6 +10,7 @@ import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transaction
 
+// FIXME: Read config properties from config properties don't hardcode the values
 object DatabaseFactory {   //used to initialize databases and setup tables
     fun init() {  //used for initialization
 

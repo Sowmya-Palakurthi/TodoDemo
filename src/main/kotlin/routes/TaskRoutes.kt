@@ -38,13 +38,16 @@ fun Route.TaskRoutes(taskService: TasksImplemetation){
 
         post("/add") {
             try {
+                // FIXME: instead of val it should be val since you are not re-assigning / modifying the variable
+                // TODO: Use mapper classes for converting the POJO classes from one format to other
                 var taskReq = call.receive<taskResponse>()
                var title=taskReq.title
-                if(title.isBlank()){  call.respond(HttpStatusCode.BadRequest, "Title cannot be empty")}
-
+                if(title.isBlank()){  call.respond(HttpStatusCode.BadRequest, "Title cannot be empty")
+                    // FIXME: Follow variable naming conventions
+                    // FIXME: Not able to understand the metric of deadlineData Like hour, seconds, ms, etc. variable
                     val deaddate = taskReq.deadline.toIntOrNull()
                 val deadLine = when {
-                    deaddate == null -> "No Deadline"
+                    deaddate == null -> "No Deadline" // FIXME: Is this an idea behaviour without any Deadline we are storing task?
                     deaddate < 0 -> {
                         call.respond(HttpStatusCode.BadRequest, "Deadline cannot be negative")
                         return@post
@@ -59,7 +62,7 @@ fun Route.TaskRoutes(taskService: TasksImplemetation){
                     call.respond(HttpStatusCode.BadRequest, "Task not added due to some issue")
                 }
             } catch (e: Exception) {
-                e.printStackTrace()
+                e.printStackTrace()  // FIXME: Use logger with correct level
                 call.respond(HttpStatusCode.InternalServerError, "Error adding task.")
             }
         }

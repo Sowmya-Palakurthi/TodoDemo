@@ -9,7 +9,15 @@ import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 import io.ktor.server.plugins.contentnegotiation.*
 import di.AppComponent
-
+/**
+ * Feedback:
+ * 1. Dependency injection needs to be corrected
+ * 2. Data layer need to be segregated
+ * 3. Expose data layer trough Repository
+ * 4. Naming conventions should be followed
+ * 5. Data read write strategy need to be otimized(Like redis caching)
+ * 6. Remove hardcoding from everywhere
+ * **/
 
 class MyApplication {
     companion object {
