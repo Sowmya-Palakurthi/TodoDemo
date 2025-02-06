@@ -17,6 +17,7 @@ import di.AppComponent
  * 4. Naming conventions should be followed
  * 5. Data read write strategy need to be otimized(Like redis caching)
  * 6. Remove hardcoding from everywhere
+ * 7. Authentication is missing
  * **/
 
 class MyApplication {
